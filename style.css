@@ -7,7 +7,7 @@ body{
 
 main{
     width: 45.625rem;
-    margin: 6.25rem auto;
+    margin: 4.5rem  auto;
     display: flex;
     align-items: center;
 }
@@ -53,4 +53,8 @@ button:hover{
 
 footer{
     text-align: center;
+}
+
+img{
+    width: 80%;
 }

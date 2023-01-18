@@ -7,9 +7,16 @@ let secondResult = null;
 let movements =  0;
 let hits = 0;
 let timer = false;
-let time = 30;
-let inicialTime = 30;
+let time = 40;
+let inicialTime = 40;
 let regressiveTime = null;
+
+//variables sonidos
+let winAudio = new Audio('./sounds/win.wav');
+let loseAudio = new Audio('./sounds/lose.wav');
+let clickAudio = new Audio('./sounds/click.wav');
+let rightAudio = new Audio('./sounds/right.wav');
+let wrongAudio = new Audio('./sounds/wrong.wav');
 
 //Apuntando a documento HTML
 let showMoves = document.getElementById('movements');
@@ -29,6 +36,7 @@ function countTime(){
         if(time == 0){
             clearInterval(regressiveTime);
             blockCards();
+            loseAudio.play();
         }
     },1000);
 }
@@ -37,7 +45,7 @@ function countTime(){
 function blockCards(){
     for (let i = 0; i<=15; i++) {
         let lockedCard = document.getElementById(i);
-        lockedCard.innerHTML = numbers[i];
+        lockedCard.innerHTML = `<img src="./image/${number[i]}.png" alt="">`;
         lockedCard.disabled = true;
     }
 }
@@ -59,15 +67,15 @@ function show(id){
         //y lo que logramos es asociar los 16 botones con los 16 elementos del arreglo desordenado
         //creamos la variable para luego poder compararla con la segunda carta
         firstResult = numbers[id];
-        card1.innerHTML = firstResult;
-
+        card1.innerHTML = `<img src="./image/${firstResult}.png" alt="">`;
+        clickAudio.play();
         //deshabilitar el primer botón
         card1.disabled = true;
     }else if(uncoveredCards == 2){
         //Mostrar segundo número
         card2 = document.getElementById(id);
         secondResult = numbers[id];
-        card2.innerHTML = secondResult;
+        card2.innerHTML = `<img src="./image/${secondResult}.png" alt="">`;
 
         //Deshabilitar segundo botón
         card2.disabled = true;
@@ -82,14 +90,16 @@ function show(id){
             //aumentar aciertos
             hits++;
             showHits.innerHTML = `Acierto: ${hits}`;
-
+            rightAudio.play();
             if(hits == 8){
+                winAudio.play();
                 clearInterval(regressiveTime);
-                showHits.innerHTML = `Hits: ${hits} 🔥`;
-                showTime.innerHTML = `Fantástico!! Tu tiempo es de ${inicialTime - time} segundos!`;
+                showHits.innerHTML = `Hits: ${hits} ✨`;
+                showTime.innerHTML = `Fantástico!! Tu tiempo es de ${inicialTime - time} segundos 🎉 🎉 !`;
                 showMoves.innerHTML = `Movimientos: ${movements} 🔥`;
             }
         }else{
+            wrongAudio.play();
             //mostrar momentaneamente valores y volver a tapar
             setTimeout(()=>{
                 card1.innerHTML = ` `;
