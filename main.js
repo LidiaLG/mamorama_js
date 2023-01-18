@@ -8,6 +8,7 @@ let movements =  0;
 let hits = 0;
 let timer = false;
 let time = 30;
+let inicialTime = 30;
 let regressiveTime = null;
 
 //Apuntando a documento HTML
@@ -25,15 +26,24 @@ function countTime(){
     regressiveTime = setInterval(()=>{
         time--;
         showTime.innerHTML = `Tiempo: ${time} segundos`;
-        if(timer == 0){
+        if(time == 0){
             clearInterval(regressiveTime);
-            
+            blockCards();
         }
     },1000);
 }
 
+//función para que cuando se haya acabado el tiempo si hemos perdido se muestren las tarjetas que faltaron
+function blockCards(){
+    for (let i = 0; i<=15; i++) {
+        let lockedCard = document.getElementById(i);
+        lockedCard.innerHTML = numbers[i];
+        lockedCard.disabled = true;
+    }
+}
+
 //declaramos la función principal, dentro le declaramos el parametro id de cada botón
-function mostrar(id){
+function show(id){
     if(timer == false){
         countTime();
         timer = true;
@@ -74,8 +84,10 @@ function mostrar(id){
             showHits.innerHTML = `Acierto: ${hits}`;
 
             if(hits == 8){
-                showHits.innerHTML = `Hits: ${hits} 🔥`
-                showMoves.innerHTML = `Movimientos: ${movements} 🔥`
+                clearInterval(regressiveTime);
+                showHits.innerHTML = `Hits: ${hits} 🔥`;
+                showTime.innerHTML = `Fantástico!! Tu tiempo es de ${inicialTime - time} segundos!`;
+                showMoves.innerHTML = `Movimientos: ${movements} 🔥`;
             }
         }else{
             //mostrar momentaneamente valores y volver a tapar
@@ -85,7 +97,7 @@ function mostrar(id){
                 card1.disabled = false;
                 card2.disabled = false;
                 uncoveredCards = 0;
-            }, 2000);
+            }, 800);
         }
     }
 }
